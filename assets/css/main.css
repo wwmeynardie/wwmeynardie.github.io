@@ -1,4 +1,4 @@
-/*@import url("fontawesome-all.min.css");*/
+@import url("fontawesome-all.min.css");
 @import url("all.min.css");
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic|Open+Sans+Condensed:700");
 
@@ -1997,6 +1997,12 @@ input, select, textarea {
 				text-align: center;
 			}
 
+			ul.contact li a span.label{
+				display: none;
+				text-decoration: none;
+				transform: translate(0em, 1em)
+			}
+
 				ul.contact li a:before {
 					color: #fff;
 					font-size: 32px;
@@ -2054,7 +2060,7 @@ input, select, textarea {
 		padding-left: 0;
 		cursor: default;
 		position: relative;
-		margin: -2em 0 -2em 0em;
+		margin: -4em 0 -2em 0em;
 	}
 
 		ul.special li {
@@ -2065,7 +2071,7 @@ input, select, textarea {
 			position: relative;
 			display: inline-block;
 			top: 0;
-			padding: 1em 1em 1em 1em;
+			padding: 0em 1em 1em 1em;
 		}
 
 			ul.special li a {
@@ -2088,9 +2094,36 @@ input, select, textarea {
 					font-size: 4em;
 					color: #fff;
 				}
-				ul.special li a span {
-					display: none
+
+				ul.special li span {
+					display: none;
+					transform: translate(0,1em);
+					font-family: 'Font Awesome 5 Free';
+					text-decoration: underline;
 				}
+
+			ul.special li.saturn {
+				transform: translate(0em, 3.6em);
+			}
+
+			ul.special li.saturn:hover > a.saturn {
+				background: url("../../images/saturn.svg"), var(--boldblue);
+				background-position: center;
+				background-size: 95%;
+			}
+
+			ul.special li a.saturn {
+				background: url("../../images/saturn.svg"), var(--fadedblue);
+				background-position: center;
+				background-size: 95%;
+				border-radius: 100%;
+				font-size: 4em;
+				width: 2.04551em;
+				height: 2.04551em;
+				line-height: 2em;
+				transform: translate(0em, 0em);
+				font-family: 'Font Awesome 5 Free'
+			}
 
 			ul.special li:hover {
 				top: -1em;
@@ -2159,7 +2192,7 @@ input, select, textarea {
 		font-family: 'Open Sans Condensed', sans-serif;
 		font-weight: 700;
 		text-transform: uppercase;
-		color: #6b7770;
+		color: #6d6b77;
 	}
 
 	form input[type="text"],
@@ -2329,13 +2362,13 @@ input, select, textarea {
 		.icon:before {
 			-moz-osx-font-smoothing: grayscale;
 			-webkit-font-smoothing: antialiased;
-			display: inline-block;
+			display: none;
 			font-style: normal;
 			font-variant: normal;
 			text-rendering: auto;
 			line-height: 1;
 			text-transform: none !important;
-			font-family: 'Font Awesome 6 Free';
+			font-family: 'Font Awesome 5 Free';
 			font-weight: 400;
 		}
 
@@ -2344,7 +2377,7 @@ input, select, textarea {
 		}
 
 		.icon > .label {
-			display: none;
+			display: underline;
 		}
 
 		.icon.solid:before {
@@ -2352,8 +2385,28 @@ input, select, textarea {
 		}
 
 		.icon.brands:before {
-			font-family: 'Font Awesome 6 Brands';
+			font-family: 'Font Awesome 5 Brands';
 		}
+	
+		/* a.saturn {
+			background: url("../../images/saturn.svg"), var(--fadedblue);
+			border-radius: 100%;
+			transform: translate(0em, 3.5em)
+		}
+		a.saturn:hover {
+			background: url("../../images/saturn.svg"), var(--boldblue);
+			border-radius: 100%;
+		} */
+
+		  /* .menu2 {
+			display: block;
+			width: 50px;
+			height: 50px;
+			border-radius: 10px;
+			background-color: #f0f0f0;
+		  
+			background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='50' height='50' viewBox='0 0 100 100'><path d='M 30 30 L 70 70 M 30 70 L 70 30' stroke='white' stroke-width='10' /></svg>");
+		  } */
 
 /* Page Wrapper */
 
@@ -2874,7 +2927,7 @@ input, select, textarea {
 						text-rendering: auto;
 						line-height: 1;
 						text-transform: none !important;
-						font-family: 'Font Awesome 6 Free';
+						font-family: 'Font Awesome 5 Free';
 						font-weight: 900;
 					}
 
@@ -3076,9 +3129,20 @@ input, select, textarea {
 					padding: 0.75em 0 0 0.75em;
 				}
 
-					ul.special li a:before {
-						font-size: 28px;
-					}
+				ul.special li a:before {
+					font-size: 28px;
+				}
+
+				ul.special li.saturn {
+					transform: translate(0px, 18px)
+				}
+
+				ul.special li.saturn > a.saturn{
+					font-size: 28px;
+					width: 2em;
+					height: 2em;
+					transform: translate(0em, 0em)
+				}
 
 		/* Box */
 
