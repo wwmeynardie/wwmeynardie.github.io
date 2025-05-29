@@ -2107,13 +2107,13 @@ input, select, textarea {
 			}
 
 			ul.special li.saturn:hover > a.saturn {
-				background: url("../../images/saturn.svg"), var(--boldblue);
+				background: url("../../images/saturn-white.png"), var(--boldblue);
 				background-position: center;
 				background-size: 95%;
 			}
 
 			ul.special li a.saturn {
-				background: url("../../images/saturn.svg"), var(--fadedblue);
+				background: url("../../images/saturn-white.png"), var(--fadedblue);
 				background-position: center;
 				background-size: 95%;
 				border-radius: 100%;
