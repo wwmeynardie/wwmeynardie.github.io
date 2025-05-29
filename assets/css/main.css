@@ -3119,6 +3119,9 @@ input, select, textarea {
 					margin-top: 0;
 				}
 
+			ul.contact {
+				margin: -1em 0 0 0;
+			}
 
 			ul.contact li a:before{
 				font-size: 28px
@@ -3126,7 +3129,7 @@ input, select, textarea {
 		/* Special */
 
 			ul.special {
-				margin: -4em 0 2em -0.75em;
+				margin: -3em 0 0em -0.75em;
 			}
 
 				ul.special li {
