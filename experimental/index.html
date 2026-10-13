@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>William W. Meynardie</title>
+<meta name="description" content="William W. Meynardie is an exoplanet researcher at the University of Michigan's Department of Astronomy, studying the formation of widely separated companions to nearby stars." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   Tokens
+   ============================================================ */
+:root{
+  --void:#04050d;
+  --deep:#0a0d1e;
+  --panel:rgba(255,255,255,.045);
+  --line:rgba(255,255,255,.10);
+  --line-soft:rgba(255,255,255,.06);
+
+  --ink:#eef1fb;
+  --ink-2:#b9c0d8;
+  --ink-3:#7d86a4;
+
+  --amber:#ffb35c;     /* Ross 458 is an M dwarf — warm */
+  --cyan:#7fd7ff;
+  --violet:#a98cff;
+  --rose:#ff8f9e;
+
+  --maxw:1120px;
+  --ease:cubic-bezier(.22,.8,.26,1);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--void);
+  color:var(--ink);
+  font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  font-weight:300;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+h1,h2,h3,.display{font-family:"Space Grotesk","Inter",sans-serif;font-weight:600;line-height:1.1;letter-spacing:-.02em;margin:0}
+a{color:inherit}
+img{max-width:100%;display:block}
+
+/* ============================================================
+   Starfield + nebula
+   ============================================================ */
+#sky{position:fixed;inset:0;z-index:0;pointer-events:none}
+#stars{display:block;width:100%;height:100%}
+.nebula{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(60vw 55vh at 18% 12%, rgba(169,140,255,.16), transparent 62%),
+    radial-gradient(52vw 48vh at 84% 26%, rgba(127,215,255,.12), transparent 60%),
+    radial-gradient(70vw 60vh at 50% 108%, rgba(255,179,92,.10), transparent 60%);
+  filter:blur(8px);
+}
+.vignette{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(120vw 100vh at 50% 40%, transparent 40%, rgba(2,3,10,.72) 100%);
+}
+
+/* ============================================================
+   Top bar (appears after the hero)
+   ============================================================ */
+#topbar{
+  position:fixed;top:0;left:0;right:0;z-index:40;
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  padding:.85rem clamp(1rem,4vw,2.25rem);
+  background:rgba(4,5,13,.72);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line-soft);
+  transform:translateY(-110%);
+  transition:transform .5s var(--ease);
+}
+#topbar.show{transform:translateY(0)}
+#topbar .mark{font-family:"Space Grotesk",sans-serif;font-weight:600;letter-spacing:.02em;font-size:.95rem}
+#topbar .mark span{color:var(--amber)}
+#topbar nav{display:flex;gap:clamp(.6rem,2vw,1.6rem);flex-wrap:wrap}
+#topbar nav a{
+  text-decoration:none;color:var(--ink-2);font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;
+  padding:.25rem 0;position:relative;transition:color .25s
+}
+#topbar nav a::after{
+  content:"";position:absolute;left:0;right:100%;bottom:0;height:1px;background:var(--amber);
+  transition:right .3s var(--ease)
+}
+#topbar nav a:hover{color:var(--ink)}
+#topbar nav a:hover::after{right:0}
+
+/* ============================================================
+   Hero — the system
+   ============================================================ */
+#hero{
+  position:relative;z-index:10;
+  min-height:100svh;
+  display:grid;place-items:center;
+  padding:5rem 1rem 4rem;
+}
+.system{
+  position:relative;
+  width:min(80vmin,740px);
+  aspect-ratio:1;
+  display:grid;place-items:center;
+}
+
+/* central star + name */
+.core{
+  position:relative;z-index:5;
+  text-align:center;
+  width:min(56%,400px);
+  display:grid;place-items:center;
+  gap:.55rem;
+}
+.core .glow{
+  position:absolute;width:230%;aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(circle, rgba(255,179,92,.30) 0%, rgba(255,179,92,.10) 34%, transparent 66%);
+  animation:breathe 7s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes breathe{0%,100%{transform:scale(1);opacity:.85}50%{transform:scale(1.10);opacity:1}}
+
+.core h1{
+  font-size:clamp(1.55rem,4.4vmin,2.7rem);
+  position:relative;
+}
+.core h1 .given{display:block;color:var(--ink)}
+.core h1 .family{
+  display:block;
+  background:linear-gradient(100deg,var(--amber),#ffd9a8 45%,var(--cyan));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.core .role{
+  position:relative;
+  font-size:clamp(.72rem,1.5vmin,.86rem);
+  letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);
+  margin:0;
+}
+.core .rotator{
+  position:relative;
+  font-size:clamp(.78rem,1.7vmin,.95rem);
+  color:var(--ink-2);min-height:1.6em;
+}
+.core .rotator b{color:var(--cyan);font-weight:500}
+.core .ads{
+  position:relative;
+  margin-top:.35rem;
+  display:inline-flex;align-items:center;gap:.5rem;
+  padding:.5rem 1.05rem;
+  font-size:.76rem;letter-spacing:.12em;text-transform:uppercase;
+  text-decoration:none;color:var(--ink);
+  border:1px solid var(--line);border-radius:999px;
+  background:rgba(255,255,255,.04);
+  transition:border-color .3s,background .3s,transform .3s var(--ease)
+}
+.core .ads:hover{border-color:var(--amber);background:rgba(255,179,92,.12);transform:translateY(-2px)}
+
+/* orbits */
+.orbit{
+  position:absolute;top:50%;left:50%;
+  width:var(--size);aspect-ratio:1;
+  margin:calc(var(--size) / -2) 0 0 calc(var(--size) / -2);
+  transform-origin:50% 50%;
+  border-radius:50%;
+  pointer-events:none;
+}
+.orbit .ring{
+  position:absolute;inset:0;border-radius:50%;
+  border:1px solid var(--line-soft);
+  transition:border-color .4s
+}
+.orbit:has(.body:hover) .ring{border-color:rgba(255,179,92,.45)}
+.spinner{
+  position:absolute;inset:0;
+  animation:spin var(--dur) linear infinite;
+  animation-delay:var(--delay);
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.orbit:has(.body:hover) .spinner,
+.orbit:has(.body:hover) .upright{animation-play-state:paused}
+
+.body{
+  position:absolute;top:0;left:50%;
+  width:0;height:0;
+  pointer-events:auto;
+  text-decoration:none;
+  display:block;
+}
+.upright{
+  position:absolute;
+  transform-origin:50% 50%;
+  animation:spin var(--dur) linear infinite reverse;
+  animation-delay:var(--delay);
+  display:grid;place-items:center;gap:.5rem;
+  translate:-50% -50%;
+}
+.planet{
+  position:relative;
+  width:var(--r);height:var(--r);border-radius:50%;
+  background:var(--fill);
+  box-shadow:
+    inset -5px -6px 14px rgba(0,0,0,.55),
+    inset 3px 3px 10px rgba(255,255,255,.16),
+    0 0 0 0 rgba(255,255,255,0),
+    0 0 22px -4px var(--halo);
+  transition:transform .35s var(--ease), box-shadow .35s var(--ease);
+}
+.planet::after{ /* ring for the Saturn-like world */
+  content:"";position:absolute;inset:-46% -78%;
+  border-radius:50%;
+  border:2px solid var(--ringc,transparent);
+  border-bottom-color:transparent;
+  transform:rotate(-22deg) scaleY(.30);
+}
+.body .label{
+  font-family:"Space Grotesk",sans-serif;
+  font-size:.76rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-2);
+  white-space:nowrap;
+  padding:.2rem .55rem;
+  border-radius:999px;
+  background:rgba(4,5,13,.55);
+  opacity:.55;
+  transition:opacity .3s, color .3s, transform .3s var(--ease);
+}
+.body:hover .planet,.body:focus-visible .planet{
+  transform:scale(1.42);
+  box-shadow:
+    inset -5px -6px 14px rgba(0,0,0,.5),
+    inset 3px 3px 10px rgba(255,255,255,.2),
+    0 0 34px -2px var(--halo);
+}
+.body:hover .label,.body:focus-visible .label{opacity:1;color:#fff;transform:translateY(2px)}
+.body:focus-visible{outline:none}
+.body:focus-visible .planet{box-shadow:0 0 0 3px var(--amber), 0 0 30px -2px var(--halo)}
+
+/* scroll cue */
+.cue{
+  position:absolute;bottom:1.6rem;left:50%;translate:-50% 0;z-index:12;
+  display:grid;place-items:center;gap:.5rem;
+  font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3);
+  text-decoration:none;
+}
+.cue .stem{width:1px;height:34px;background:linear-gradient(var(--ink-3),transparent);animation:fall 2.4s ease-in-out infinite}
+@keyframes fall{0%{transform:scaleY(.2);transform-origin:top;opacity:0}40%{opacity:1}100%{transform:scaleY(1);transform-origin:top;opacity:0}}
+
+/* ============================================================
+   About
+   ============================================================ */
+main{position:relative;z-index:10}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 clamp(1.1rem,5vw,2rem)}
+section.band{padding:clamp(4rem,10vh,7rem) 0}
+
+.eyebrow{
+  display:flex;align-items:center;gap:.8rem;
+  font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;color:var(--ink-3);
+  margin-bottom:1.4rem;
+}
+.eyebrow::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent)}
+
+.about{
+  display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);
+  gap:clamp(1.6rem,4vw,3.2rem);align-items:start;
+}
+.portrait{
+  position:relative;border-radius:18px;overflow:hidden;
+  border:1px solid var(--line);
+  background:linear-gradient(160deg,rgba(169,140,255,.18),rgba(127,215,255,.10));
+  aspect-ratio:4/5;
+}
+.portrait img{width:100%;height:100%;object-fit:cover}
+.portrait .fallback{
+  position:absolute;inset:0;display:grid;place-items:center;text-align:center;
+  color:var(--ink-3);font-size:.78rem;letter-spacing:.1em;padding:1.5rem;
+}
+.portrait::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 55%,rgba(4,5,13,.5));
+  pointer-events:none;
+}
+.prose h2{font-size:clamp(1.6rem,3.6vw,2.35rem);margin-bottom:1.1rem}
+.prose p{color:var(--ink-2);margin:0 0 1.05rem;max-width:62ch}
+.prose a{color:var(--cyan);text-decoration:none;border-bottom:1px solid rgba(127,215,255,.35);transition:border-color .25s,color .25s}
+.prose a:hover{color:#fff;border-bottom-color:#fff}
+.prose strong{color:var(--ink);font-weight:500}
+
+.facts{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:1.6rem}
+.fact{
+  font-size:.74rem;letter-spacing:.06em;color:var(--ink-2);
+  border:1px solid var(--line);border-radius:999px;padding:.35rem .85rem;
+  background:var(--panel);
+  transition:border-color .3s,color .3s,transform .3s var(--ease)
+}
+.fact:hover{border-color:var(--cyan);color:#fff;transform:translateY(-2px)}
+
+/* reveal on scroll */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+
+/* ============================================================
+   Footer
+   ============================================================ */
+footer{
+  position:relative;z-index:10;
+  border-top:1px solid var(--line-soft);
+  background:linear-gradient(180deg,transparent,rgba(10,13,30,.75));
+  padding:clamp(2.5rem,6vh,4rem) 0 2rem;
+}
+.foot-grid{display:flex;flex-wrap:wrap;gap:2rem 3rem;justify-content:space-between;align-items:flex-start}
+.foot-grid h3{font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;color:var(--ink-3);font-weight:500;margin-bottom:.9rem}
+.foot-links{display:grid;gap:.45rem}
+.foot-links a{text-decoration:none;color:var(--ink-2);font-size:.92rem;transition:color .25s,padding-left .25s var(--ease)}
+.foot-links a:hover{color:var(--amber);padding-left:.3rem}
+.socials{display:flex;gap:.6rem}
+.socials a{
+  width:38px;height:38px;display:grid;place-items:center;
+  border:1px solid var(--line);border-radius:11px;color:var(--ink-2);
+  transition:color .25s,border-color .25s,transform .25s var(--ease),background .25s
+}
+.socials a:hover{color:#fff;border-color:var(--amber);background:rgba(255,179,92,.12);transform:translateY(-3px)}
+.socials svg{width:17px;height:17px;fill:currentColor}
+.copyright{
+  margin-top:2.4rem;padding-top:1.2rem;border-top:1px solid var(--line-soft);
+  display:flex;flex-wrap:wrap;gap:.4rem 1.2rem;
+  font-size:.76rem;color:var(--ink-3)
+}
+.copyright a{color:var(--ink-3);text-decoration:none;border-bottom:1px solid var(--line)}
+.copyright a:hover{color:var(--ink-2)}
+
+/* ============================================================
+   Small screens — orbits become a launch list
+   ============================================================ */
+@media (max-width:720px){
+  .system{width:100%;aspect-ratio:auto;display:block}
+  .orbit{display:none}
+  .core{width:100%;margin:0 auto}
+  .core .glow{width:min(340px,92vw)}
+  .mobile-nav{
+    display:grid;gap:.6rem;margin:2.6rem auto 0;max-width:420px;width:100%;
+    position:relative;z-index:5;
+  }
+  .mobile-nav a{
+    display:flex;align-items:center;gap:.9rem;
+    padding:.85rem 1.1rem;border:1px solid var(--line);border-radius:14px;
+    background:var(--panel);text-decoration:none;color:var(--ink);
+    font-family:"Space Grotesk",sans-serif;font-size:.86rem;letter-spacing:.12em;text-transform:uppercase;
+  }
+  .mobile-nav a:active{border-color:var(--amber)}
+  .mobile-nav .dot{width:16px;height:16px;border-radius:50%;background:var(--fill);flex:0 0 auto;box-shadow:0 0 14px -2px var(--halo)}
+  .about{grid-template-columns:1fr}
+  .portrait{max-width:260px}
+  .cue{display:none}
+}
+@media (min-width:721px){ .mobile-nav{display:none} }
+
+/* ============================================================
+   Reduced motion
+   ============================================================ */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .spinner,.upright,.core .glow,.cue .stem{animation:none !important}
+  /* frozen orbits still need their planets spread around the ring */
+  .spinner{transform:rotate(var(--a,0deg))}
+  .upright{transform:rotate(calc(-1 * var(--a,0deg)))}
+  .reveal{opacity:1;transform:none;transition:none}
+}
+</style>
+</head>
+<body>
+
+<div id="sky"><canvas id="stars"></canvas></div>
+<div class="nebula"></div>
+<div class="vignette"></div>
+
+<!-- top bar -->
+<header id="topbar">
+  <a class="mark" href="index-space.html" style="text-decoration:none">W<span>.</span>W<span>.</span> Meynardie</a>
+  <nav>
+    <a href="index-space.html">Home</a>
+    <a href="research-space.html">Research</a>
+    <a href="publications-space.html">Publications</a>
+    <a href="William_Meynardie_CV.pdf">CV</a>
+    <a href="contact-space.html">Contact</a>
+  </nav>
+</header>
+
+<!-- ============================ HERO ============================ -->
+<section id="hero">
+  <div class="system">
+
+    <!-- Research -->
+    <div class="orbit" style="--a:42deg;--size:66%;--dur:34s;--delay:-2s">
+      <div class="ring"></div>
+      <div class="spinner">
+        <a class="body" href="research-space.html" aria-label="Research">
+          <span class="upright" style="--dur:34s;--delay:-2s">
+            <span class="planet" style="--r:30px;--fill:radial-gradient(circle at 32% 28%, #ffd9a1, #e79f4e 42%, #a45f21 100%);--halo:rgba(255,179,92,.7);--ringc:rgba(255,214,160,.85)"></span>
+            <span class="label">Research</span>
+          </span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Publications -->
+    <div class="orbit" style="--a:150deg;--size:79%;--dur:48s;--delay:-16s">
+      <div class="ring"></div>
+      <div class="spinner">
+        <a class="body" href="publications-space.html" aria-label="Publications">
+          <span class="upright" style="--dur:48s;--delay:-16s">
+            <span class="planet" style="--r:26px;--fill:radial-gradient(circle at 34% 26%, #cfe6ff, #8fb6ee 40%, #4a6cb0 100%);--halo:rgba(127,215,255,.65)"></span>
+            <span class="label">Publications</span>
+          </span>
+        </a>
+      </div>
+    </div>
+
+    <!-- CV -->
+    <div class="orbit" style="--a:255deg;--size:90%;--dur:62s;--delay:-40s">
+      <div class="ring"></div>
+      <div class="spinner">
+        <a class="body" href="William_Meynardie_CV.pdf" aria-label="Curriculum Vitae">
+          <span class="upright" style="--dur:62s;--delay:-40s">
+            <span class="planet" style="--r:22px;--fill:radial-gradient(circle at 34% 26%, #e6dcff, #b9a2ff 40%, #6a4fc4 100%);--halo:rgba(169,140,255,.65)"></span>
+            <span class="label">CV</span>
+          </span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Contact -->
+    <div class="orbit" style="--a:325deg;--size:100%;--dur:80s;--delay:-24s">
+      <div class="ring"></div>
+      <div class="spinner">
+        <a class="body" href="contact-space.html" aria-label="Contact">
+          <span class="upright" style="--dur:80s;--delay:-24s">
+            <span class="planet" style="--r:18px;--fill:radial-gradient(circle at 34% 26%, #ffd2d2, #ff9d8f 40%, #b1503f 100%);--halo:rgba(255,143,158,.6)"></span>
+            <span class="label">Contact</span>
+          </span>
+        </a>
+      </div>
+    </div>
+
+    <!-- center -->
+    <div class="core">
+      <div class="glow" aria-hidden="true"></div>
+      <h1><span class="given">William W.</span><span class="family">Meynardie</span></h1>
+      <p class="role">Ph.D. student &middot; University of Michigan</p>
+      <p class="rotator" aria-live="off">I study <b id="rot">exoplanet atmospheres</b></p>
+      <a class="ads" target="_blank" rel="noopener noreferrer"
+         href="https://ui.adsabs.harvard.edu/search/p_=0&amp;q=author%3A%22Meynardie%2C%20W.%22&amp;sort=date%20desc%2C%20bibcode%20desc">NASA ADS</a>
+    </div>
+
+    <!-- phone navigation -->
+    <div class="mobile-nav">
+      <a href="research-space.html"><span class="dot" style="--fill:radial-gradient(circle at 32% 28%, #ffd9a1, #e79f4e 50%, #a45f21);--halo:rgba(255,179,92,.7)"></span>Research</a>
+      <a href="publications-space.html"><span class="dot" style="--fill:radial-gradient(circle at 34% 26%, #cfe6ff, #8fb6ee 50%, #4a6cb0);--halo:rgba(127,215,255,.65)"></span>Publications</a>
+      <a href="William_Meynardie_CV.pdf"><span class="dot" style="--fill:radial-gradient(circle at 34% 26%, #e6dcff, #b9a2ff 50%, #6a4fc4);--halo:rgba(169,140,255,.65)"></span>CV</a>
+      <a href="contact-space.html"><span class="dot" style="--fill:radial-gradient(circle at 34% 26%, #ffd2d2, #ff9d8f 50%, #b1503f);--halo:rgba(255,143,158,.6)"></span>Contact</a>
+    </div>
+
+  </div>
+
+  <a class="cue" href="#about"><span class="stem"></span>About</a>
+</section>
+
+<!-- ============================ ABOUT ============================ -->
+<main>
+  <section class="band wrap" id="about">
+    <div class="eyebrow reveal">About</div>
+    <div class="about">
+      <div class="portrait reveal">
+        <img src="images/portrait.jpg" alt="William W. Meynardie"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='grid';" />
+        <div class="fallback" style="display:none">portrait.jpg not found<br>in /images</div>
+      </div>
+      <div class="prose reveal">
+        <h2>Reading formation histories out of&nbsp;atmospheres</h2>
+        <p>
+          I am a third year Ph.D. student in the
+          <a target="_blank" rel="noopener noreferrer" href="https://lsa.umich.edu/astro">University of Michigan Department of Astronomy</a>.
+          I am interested in exoplanets and their atmospheres &mdash; and in particular, in what exoplanet
+          observations can tell us about the formation history of a planet.
+        </p>
+        <p>
+          For my first project as a Ph.D. student, I fit JWST observations of the widely separated substellar
+          companion <strong>Ross&nbsp;458&nbsp;C</strong> with forward models and retrievals to infer its composition.
+          By comparing that composition to its host, we determined that the two are consistent, and so it likely
+          formed through gravitational fragmentation of the same molecular cloud that formed the host.
+        </p>
+        <p>
+          As an undergraduate at the University of Virginia, I studied Luminous InfraRed Galaxies (LIRGs) with the
+          Great Observatories All-sky LIRG Survey (GOALS) team. As a post-bac at Caltech, I studied supernovae as a
+          member of the Zwicky Transient Facility (ZTF).
+        </p>
+        <p>
+          Outside of astronomy, I like sports, video games, and paddleboarding around Ann&nbsp;Arbor.
+        </p>
+        <div class="facts">
+          <span class="fact">JWST NIRSpec</span>
+          <span class="fact">Atmospheric retrievals</span>
+          <span class="fact">Brown dwarfs</span>
+          <span class="fact">Ross 458 C</span>
+          <span class="fact">Paddleboarding</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ============================ FOOTER ============================ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h3>Navigate</h3>
+        <div class="foot-links">
+          <a href="index-space.html">Home</a>
+          <a href="research-space.html">Research</a>
+          <a href="publications-space.html">Publications</a>
+          <a href="William_Meynardie_CV.pdf">CV</a>
+          <a href="contact-space.html">Contact</a>
+        </div>
+      </div>
+      <div>
+        <h3>Get in touch</h3>
+        <div class="socials">
+          <a href="mailto:wmeynard@umich.edu" aria-label="Email" title="wmeynard@umich.edu">
+            <svg viewBox="0 0 512 512" aria-hidden="true"><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4C504.9 141.3 512 127.1 512 112c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/></svg>
+          </a>
+          <a href="https://bsky.app/profile/wwmeynardie.bsky.social" target="_blank" rel="noopener noreferrer" aria-label="Bluesky" title="Bluesky">
+            <svg viewBox="0 0 576 512" aria-hidden="true"><path d="M407.8 294.7c-3.3-.4-6.7-.8-10-1.3c3.4 .4 6.7 .9 10 1.3zM288 227.1C261.9 176.4 190.9 81.9 124.9 35.3C61.6-9.4 37.5-1.7 21.6 5.5C3.3 13.8 0 41.9 0 58.4S9.1 194 15 213.9c19.5 65.7 89.1 87.9 153.2 80.7c3.3-.5 6.6-.9 10-1.4c-3.3 .5-6.6 1-10 1.4C74.3 308.6-9.1 342.8 100.3 464.5C220.6 589.1 265.1 437.8 288 361.1c22.9 76.7 49.2 222.5 185.6 103.4c102.4-103.4 28.1-156-65.8-169.9c-3.3-.4-6.7-.8-10-1.3c3.4 .4 6.7 .9 10 1.3c64.1 7.2 133.7-15 153.2-80.7C566.9 194 576 75 576 58.4s-3.3-44.7-21.6-52.9c-15.8-7.2-40-14.9-103.2 29.8C385.1 81.9 314.1 176.4 288 227.1z"/></svg>
+          </a>
+          <a href="https://github.com/wwmeynardie" target="_blank" rel="noopener noreferrer" aria-label="GitHub" title="GitHub">
+            <svg viewBox="0 0 496 512" aria-hidden="true"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+          </a>
+          <a href="https://www.linkedin.com/in/william-meynardie/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" title="LinkedIn">
+            <svg viewBox="0 0 448 512" aria-hidden="true"><path d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8a53.79 53.79 0 0 1 107.58 0c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.29 0-55.69 37.7-55.69 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.69-48.3 87.86-48.3 94 0 111.28 61.9 111.28 142.3V448z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="copyright">
+      <span>&copy; 2026 William W. Meynardie. All rights reserved.</span>
+      <span>Ann Arbor, Michigan</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- starfield ---------- */
+  var cvs = document.getElementById("stars"),
+      ctx = cvs.getContext("2d"),
+      W = 0, H = 0, dpr = 1,
+      layers = [], shooters = [],
+      mx = 0, my = 0, tx = 0, ty = 0,
+      nextShot = 0;
+
+  var TINTS = ["255,255,255","255,255,255","255,255,255","255,222,180","190,220,255","215,200,255"];
+
+  function makeLayer(n, depth, maxR){
+    var a = [];
+    for (var i = 0; i < n; i++){
+      a.push({
+        x: Math.random()*W,
+        y: Math.random()*H,
+        r: (0.35 + Math.random()*maxR) * dpr,
+        t: Math.random()*Math.PI*2,
+        s: 0.6 + Math.random()*1.8,
+        c: TINTS[(Math.random()*TINTS.length)|0],
+        d: depth
+      });
+    }
+    return a;
+  }
+
+  function resize(){
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = cvs.width  = Math.floor(window.innerWidth  * dpr);
+    H = cvs.height = Math.floor(window.innerHeight * dpr);
+    cvs.style.width  = window.innerWidth + "px";
+    cvs.style.height = window.innerHeight + "px";
+    var density = Math.min(1.4, (window.innerWidth * window.innerHeight) / 900000 + 0.55);
+    layers = [
+      makeLayer(Math.round(190*density), 0.25, 0.7),
+      makeLayer(Math.round(105*density), 0.55, 1.1),
+      makeLayer(Math.round(45*density),  1.00, 1.8)
+    ];
+    draw(0);
+  }
+
+  function spawnShooter(){
+    var fromLeft = Math.random() < .5;
+    shooters.push({
+      x: fromLeft ? -60*dpr : W + 60*dpr,
+      y: Math.random() * H * 0.55,
+      vx: (fromLeft ? 1 : -1) * (5.5 + Math.random()*4) * dpr,
+      vy: (1.6 + Math.random()*1.6) * dpr,
+      life: 1
+    });
+  }
+
+  function draw(time){
+    ctx.clearRect(0,0,W,H);
+
+    tx += (mx - tx) * 0.045;
+    ty += (my - ty) * 0.045;
+
+    for (var l = 0; l < layers.length; l++){
+      var arr = layers[l];
+      for (var i = 0; i < arr.length; i++){
+        var s = arr[i];
+        var tw = reduce ? 0.75 : 0.55 + 0.45 * Math.sin(time * 0.0011 * s.s + s.t);
+        var px = s.x + tx * s.d * 26 * dpr;
+        var py = s.y + ty * s.d * 26 * dpr;
+        if (px < -20 || px > W + 20) continue;
+        ctx.beginPath();
+        ctx.fillStyle = "rgba(" + s.c + "," + (tw * (0.35 + s.d * 0.55)).toFixed(3) + ")";
+        ctx.arc(px, py, s.r, 0, 6.2832);
+        ctx.fill();
+        if (s.r > 1.5*dpr){
+          ctx.beginPath();
+          ctx.fillStyle = "rgba(" + s.c + "," + (tw*0.10).toFixed(3) + ")";
+          ctx.arc(px, py, s.r*3.4, 0, 6.2832);
+          ctx.fill();
+        }
+      }
+    }
+
+    for (var k = shooters.length - 1; k >= 0; k--){
+      var m = shooters[k];
+      m.x += m.vx; m.y += m.vy; m.life -= 0.006;
+      var g = ctx.createLinearGradient(m.x, m.y, m.x - m.vx*13, m.y - m.vy*13);
+      g.addColorStop(0, "rgba(255,255,255," + Math.max(0,m.life).toFixed(2) + ")");
+      g.addColorStop(1, "rgba(255,255,255,0)");
+      ctx.strokeStyle = g;
+      ctx.lineWidth = 1.6*dpr;
+      ctx.lineCap = "round";
+      ctx.beginPath();
+      ctx.moveTo(m.x, m.y);
+      ctx.lineTo(m.x - m.vx*13, m.y - m.vy*13);
+      ctx.stroke();
+      if (m.life <= 0 || m.x < -200*dpr || m.x > W + 200*dpr || m.y > H + 100*dpr) shooters.splice(k,1);
+    }
+  }
+
+  function loop(time){
+    draw(time);
+    if (time > nextShot){
+      nextShot = time + 6000 + Math.random()*11000;
+      if (shooters.length < 3) spawnShooter();
+    }
+    requestAnimationFrame(loop);
+  }
+
+  window.addEventListener("resize", resize, {passive:true});
+  resize();
+
+  if (!reduce){
+    window.addEventListener("mousemove", function(e){
+      mx = (e.clientX / window.innerWidth  - 0.5) * 2;
+      my = (e.clientY / window.innerHeight - 0.5) * 2;
+    }, {passive:true});
+    nextShot = 3000;
+    requestAnimationFrame(loop);
+  }
+
+  /* ---------- top bar reveal ---------- */
+  var bar = document.getElementById("topbar");
+  function onScroll(){
+    if (window.scrollY > window.innerHeight * 0.62) bar.classList.add("show");
+    else bar.classList.remove("show");
+  }
+  window.addEventListener("scroll", onScroll, {passive:true});
+  onScroll();
+
+  /* ---------- reveal on scroll ---------- */
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if (en.isIntersecting){ en.target.classList.add("in"); io.unobserve(en.target); }
+    });
+  }, {threshold:0.16});
+  Array.prototype.forEach.call(document.querySelectorAll(".reveal"), function(el, i){
+    el.style.transitionDelay = (i * 90) + "ms";
+    io.observe(el);
+  });
+
+  /* ---------- rotating interest ---------- */
+  var words = [
+    "exoplanet atmospheres",
+    "brown dwarfs",
+    "JWST spectra",
+    "how planets form",
+    "widely separated companions"
+  ];
+  var rot = document.getElementById("rot"), wi = 0;
+  if (!reduce){
+    rot.style.transition = "opacity .45s ease";
+    setInterval(function(){
+      rot.style.opacity = "0";
+      setTimeout(function(){
+        wi = (wi + 1) % words.length;
+        rot.textContent = words[wi];
+        rot.style.opacity = "1";
+      }, 450);
+    }, 3600);
+  }
+})();
+</script>
+</body>
+</html>

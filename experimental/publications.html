@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>William Meynardie &mdash; Publications</title>
+<meta name="description" content="Peer-reviewed publications by William W. Meynardie, University of Michigan Department of Astronomy." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --void:#04050d;
+  --surface:#0a0d1e;
+  --panel:rgba(255,255,255,.045);
+  --line:rgba(255,255,255,.10);
+  --line-soft:rgba(255,255,255,.06);
+
+  --ink:#eef1fb;
+  --ink-2:#b9c0d8;
+  --ink-3:#7d86a4;
+
+  --amber:#ffb35c;
+  --cyan:#7fd7ff;
+  --violet:#a98cff;
+
+  /* validated categorical slots (dark, surface #0a0d1e, all-pairs) */
+  --s1:#3987e5;
+  --s2:#d95926;
+  --s3:#199e70;
+
+  --data:#e4e9f7;      /* the observed spectrum: neutral ink, not a category */
+  --maxw:1320px;
+  --ease:cubic-bezier(.22,.8,.26,1);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--void);color:var(--ink);
+  font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  font-weight:300;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+h1,h2,h3{font-family:"Space Grotesk","Inter",sans-serif;font-weight:600;line-height:1.15;letter-spacing:-.02em;margin:0}
+img{max-width:100%;display:block}
+
+/* backdrop */
+#sky{position:fixed;inset:0;z-index:0;pointer-events:none}
+#stars{display:block;width:100%;height:100%}
+.nebula{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(58vw 50vh at 12% 6%, rgba(169,140,255,.13), transparent 62%),
+    radial-gradient(50vw 46vh at 88% 18%, rgba(127,215,255,.10), transparent 60%);
+  filter:blur(8px);
+}
+
+/* top bar */
+#topbar{
+  position:sticky;top:0;z-index:40;
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  padding:.85rem clamp(1rem,4vw,2.25rem);
+  background:rgba(4,5,13,.78);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line-soft);
+}
+#topbar .mark{font-family:"Space Grotesk",sans-serif;font-weight:600;font-size:.95rem;text-decoration:none;color:var(--ink)}
+#topbar .mark span{color:var(--amber)}
+#topbar nav{display:flex;gap:clamp(.6rem,2vw,1.6rem);flex-wrap:wrap;min-width:0}
+#topbar nav a{
+  text-decoration:none;color:var(--ink-3);font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;
+  padding:.25rem 0;position:relative;transition:color .25s
+}
+#topbar nav a.current{color:var(--ink)}
+#topbar nav a::after{content:"";position:absolute;left:0;right:100%;bottom:0;height:1px;background:var(--amber);transition:right .3s var(--ease)}
+#topbar nav a.current::after,#topbar nav a:hover::after{right:0}
+#topbar nav a:hover{color:var(--ink)}
+@media (max-width:820px){
+  #topbar{gap:.8rem}
+  #topbar .mark{font-size:.82rem;white-space:nowrap}
+  #topbar nav{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;gap:.95rem}
+  #topbar nav::-webkit-scrollbar{display:none}
+  #topbar nav a{font-size:.71rem;white-space:nowrap}
+}
+
+main{position:relative;z-index:10}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 clamp(1.1rem,5vw,2rem)}
+
+/* page head */
+.pagehead{padding-top:clamp(3rem,9vh,5.5rem);padding-bottom:clamp(1.5rem,4vh,2.5rem)}
+.pagehead .eyebrow{font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.9rem}
+.pagehead h1{font-size:clamp(2.1rem,6vw,3.4rem)}
+.pagehead h1 em{
+  font-style:normal;
+  background:linear-gradient(100deg,var(--amber),#ffd9a8 45%,var(--cyan));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.pagehead p.lede{color:var(--ink-2);max-width:64ch;margin:1.1rem 0 0;font-size:1.03rem}
+
+/* key numbers */
+.stats{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.8rem}
+.stat{
+  border:1px solid var(--line);border-radius:12px;background:var(--panel);
+  padding:.7rem 1rem;min-width:120px;
+}
+.stat .v{font-family:"Space Grotesk",sans-serif;font-size:1.15rem;color:var(--ink)}
+.stat .v small{font-size:.72rem;color:var(--ink-3);font-weight:400}
+.stat .k{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-top:.15rem}
+
+section.band{padding:clamp(2.5rem,6vh,4rem) 0}
+
+/* ============================================================
+   Project layout + sidebar
+   ============================================================ */
+.layout{
+  display:grid;grid-template-columns:214px minmax(0,1fr);min-width:0;
+  gap:clamp(1.5rem,4vw,3rem);align-items:start;
+  padding-bottom:2rem;
+}
+.projnav{position:sticky;top:calc(var(--topbar-h,56px) + 26px);align-self:start}
+.projnav h2{font-size:.68rem;letter-spacing:.24em;text-transform:uppercase;color:var(--ink-3);font-weight:500;margin-bottom:.9rem;padding-left:.8rem}
+.projnav ol{list-style:none;margin:0;padding:0;display:grid;gap:.15rem;min-width:0}
+.projnav a{
+  display:flex;align-items:center;gap:.7rem;
+  padding:.6rem .8rem;border-radius:11px;
+  text-decoration:none;color:var(--ink-3);font-size:.92rem;
+  border:1px solid transparent;
+  transition:color .25s,background .25s,border-color .25s;
+}
+.projnav a:hover{color:var(--ink-2);background:rgba(255,255,255,.04)}
+.projnav a:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.projnav .dot{
+  width:10px;height:10px;border-radius:50%;flex:0 0 auto;
+  background:rgba(255,255,255,.20);
+  transition:background .3s,box-shadow .3s,transform .3s var(--ease);
+}
+.projnav .num{font-family:"JetBrains Mono",monospace;font-size:.68rem;color:var(--ink-3);margin-left:auto;opacity:.7}
+.projnav a[aria-current="true"]{color:#fff;background:rgba(255,255,255,.06);border-color:var(--line)}
+.projnav a[aria-current="true"] .dot{background:var(--amber);box-shadow:0 0 12px -1px var(--amber);transform:scale(1.2)}
+
+.project{scroll-margin-top:calc(var(--topbar-h,56px) + 30px)}
+.project + .project{border-top:1px solid var(--line-soft);margin-top:clamp(2.5rem,7vh,4.5rem);padding-top:clamp(2.5rem,7vh,4.5rem)}
+.project .title{font-size:clamp(1.55rem,3.6vw,2.35rem);margin-bottom:.9rem}
+.project .title em{
+  font-style:normal;
+  background:linear-gradient(100deg,var(--amber),#ffd9a8 45%,var(--cyan));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.project .lede{color:var(--ink-2);max-width:64ch;margin:0;font-size:1.02rem}
+.subsection{margin-top:clamp(1.8rem,4vh,2.6rem)}
+
+/* an empty slot, honestly labelled */
+.stub{
+  border:1px dashed var(--line);border-radius:18px;
+  background:rgba(255,255,255,.02);
+  padding:clamp(1.6rem,4vw,2.6rem);
+  display:grid;gap:.7rem;place-items:start;
+}
+.stub .tag{
+  font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--amber);
+  border:1px solid rgba(255,179,92,.35);border-radius:999px;padding:.22rem .7rem;
+}
+.stub p{color:var(--ink-3);margin:0;max-width:58ch}
+.split{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:clamp(1.6rem,4vw,3rem);align-items:start}
+.prose p{color:var(--ink-2);margin:0 0 1.05rem;max-width:62ch}
+.prose strong{color:var(--ink);font-weight:500}
+.prose a{color:var(--cyan);text-decoration:none;border-bottom:1px solid rgba(127,215,255,.35)}
+.prose a:hover{color:#fff;border-bottom-color:#fff}
+.figure{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--panel)}
+.figure img{width:100%}
+.figure figcaption{font-size:.78rem;color:var(--ink-3);padding:.7rem .95rem;border-top:1px solid var(--line-soft)}
+
+/* footer */
+footer{
+  position:relative;z-index:10;border-top:1px solid var(--line-soft);
+  background:linear-gradient(180deg,transparent,rgba(10,13,30,.75));
+  padding:clamp(2.5rem,6vh,4rem) 0 2rem;margin-top:3rem;
+}
+.foot-grid{display:flex;flex-wrap:wrap;gap:2rem 3rem;justify-content:space-between}
+.foot-grid h3{font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;color:var(--ink-3);font-weight:500;margin-bottom:.9rem}
+.foot-links{display:grid;gap:.45rem}
+.foot-links a{text-decoration:none;color:var(--ink-2);font-size:.92rem;transition:color .25s,padding-left .25s var(--ease)}
+.foot-links a:hover{color:var(--amber);padding-left:.3rem}
+.socials{display:flex;gap:.6rem}
+.socials a{width:38px;height:38px;display:grid;place-items:center;border:1px solid var(--line);border-radius:11px;color:var(--ink-2);transition:all .25s var(--ease)}
+.socials a:hover{color:#fff;border-color:var(--amber);background:rgba(255,179,92,.12);transform:translateY(-3px)}
+.socials svg{width:17px;height:17px;fill:currentColor}
+.copyright{margin-top:2.4rem;padding-top:1.2rem;border-top:1px solid var(--line-soft);display:flex;flex-wrap:wrap;gap:.4rem 1.2rem;font-size:.76rem;color:var(--ink-3)}
+
+@media (max-width:860px){.split{grid-template-columns:1fr}}
+@media (max-width:980px){
+  .layout{grid-template-columns:minmax(0,1fr);gap:1rem}
+  .projnav{
+    position:sticky;top:var(--topbar-h,56px);z-index:30;
+    background:rgba(4,5,13,.88);
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line-soft);
+    padding:.55rem 0;margin-bottom:.5rem;
+  }
+  .projnav h2{display:none}
+  .projnav ol{grid-auto-flow:column;justify-content:start;gap:.45rem;overflow-x:auto;scrollbar-width:none}
+  .projnav ol::-webkit-scrollbar{display:none}
+  .projnav a{border:1px solid var(--line);border-radius:999px;padding:.34rem .8rem;font-size:.8rem;white-space:nowrap}
+  .projnav .num{display:none}
+  .project{scroll-margin-top:calc(var(--sticky-h,112px) + 18px)}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* ============================================================
+   Publications
+   ============================================================ */
+.pub{
+  border:1px solid var(--line);border-radius:16px;
+  background:linear-gradient(180deg,rgba(10,13,30,.72),rgba(6,8,20,.82));
+  padding:clamp(1.1rem,2.6vw,1.6rem);
+  transition:border-color .3s,transform .3s var(--ease);
+}
+.pub + .pub{margin-top:1rem}
+.pub:hover{border-color:rgba(255,255,255,.22);transform:translateY(-2px)}
+.pub .tags{display:flex;flex-wrap:wrap;gap:.45rem;margin-bottom:.75rem}
+.tagpill{
+  font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;
+  border:1px solid var(--line);border-radius:999px;padding:.2rem .65rem;color:var(--ink-3);
+}
+.tagpill.venue{color:var(--cyan);border-color:rgba(127,215,255,.32)}
+.tagpill.lead{color:var(--amber);border-color:rgba(255,179,92,.35)}
+.pub h3{font-size:clamp(1.05rem,2.2vw,1.32rem);line-height:1.3;margin:0 0 .7rem}
+.pub h3 a{color:var(--ink);text-decoration:none;border-bottom:1px solid transparent;transition:color .25s,border-color .25s}
+.pub h3 a:hover{color:#fff;border-bottom-color:var(--amber)}
+.authors{color:var(--ink-3);font-size:.86rem;margin:0 0 .9rem;line-height:1.6}
+.authors b{color:var(--ink);font-weight:600}
+.authors .rest{display:none}
+.authors.open .rest{display:inline}
+.more{
+  background:none;border:none;padding:0 0 0 .35rem;cursor:pointer;
+  font:inherit;font-size:.82rem;color:var(--cyan);
+  border-bottom:1px solid rgba(127,215,255,.35);
+}
+.more:hover{color:#fff;border-bottom-color:#fff}
+.more:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.pub-links{display:flex;flex-wrap:wrap;gap:.5rem}
+.btn{
+  display:inline-flex;align-items:center;gap:.45rem;
+  font-size:.76rem;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;
+  color:var(--ink-2);border:1px solid var(--line);border-radius:999px;
+  padding:.4rem .9rem;background:rgba(255,255,255,.03);
+  transition:color .25s,border-color .25s,background .25s,transform .25s var(--ease);
+}
+.btn:hover{color:#fff;border-color:var(--amber);background:rgba(255,179,92,.12);transform:translateY(-2px)}
+.ads-row{margin-top:1.5rem}
+</style>
+</head>
+<body>
+
+<div id="sky"><canvas id="stars"></canvas></div>
+<div class="nebula"></div>
+
+<header id="topbar">
+  <a class="mark" href="index-space.html">W<span>.</span>W<span>.</span> Meynardie</a>
+  <nav>
+    <a href="index-space.html">Home</a>
+    <a href="research-space.html">Research</a>
+    <a href="publications-space.html" class="current">Publications</a>
+    <a href="William_Meynardie_CV.pdf">CV</a>
+    <a href="contact-space.html">Contact</a>
+  </nav>
+</header>
+
+<main>
+  <div class="wrap pagehead">
+    <div class="eyebrow">Publications</div>
+    <h1>Papers</h1>
+    <p class="lede">
+      Peer-reviewed work, newest first. Author lists are collapsed &mdash; click to see everyone.
+    </p>
+  </div>
+
+  <div class="wrap layout">
+
+    <aside class="projnav">
+      <h2>Sections</h2>
+      <nav aria-label="Publication sections">
+        <ol>
+          <li><a href="#first-author" data-jump><span class="dot"></span>First author<span class="num">01</span></a></li>
+          <li><a href="#contributing" data-jump><span class="dot"></span>Contributing<span class="num">02</span></a></li>
+        </ol>
+      </nav>
+    </aside>
+
+    <div class="projects">
+
+      <section class="project" id="first-author" aria-labelledby="fa-title">
+        <h2 class="title" id="fa-title">First author</h2>
+
+        <div class="subsection">
+          <article class="pub">
+            <div class="tags">
+              <span class="tagpill lead">First author</span>
+              <span class="tagpill venue">The Astrophysical Journal</span>
+              <span class="tagpill">November 2025</span>
+            </div>
+            <h3><a href="https://ui.adsabs.harvard.edu/abs/2025arXiv250922803M/abstract" target="_blank" rel="noopener noreferrer">Ross 458 C: Gas Giant or Brown Dwarf?</a></h3>
+            <p class="authors"><b>William W. Meynardie</b>, Michael R. Meyer, Ryan J. MacDonald, Per Calissendorff<span class="rest">, Elijah Mullens, Gabriel Munoz Zarazua, Anuranj Roy, Hansica Ganta, Eileen C. Gonzales, Arthur Adams, Nikole Lewis, Yucian Hong, Jonathan Lunine</span><button class="more" data-more aria-expanded="false"><span class="lbl">+9 more</span></button></p>
+            <div class="pub-links">
+              <a class="btn" href="https://ui.adsabs.harvard.edu/abs/2025arXiv250922803M/abstract" target="_blank" rel="noopener noreferrer">NASA ADS</a>
+              <a class="btn" href="research-space.html#ross458c">Explore the spectrum</a>
+            </div>
+          </article>
+
+          <div class="ads-row">
+            <a class="btn" href="https://ui.adsabs.harvard.edu/search/fq=%7B!type%3Daqp%20v%3D%24fq_database%7D&fq_database=(database%3Aastronomy%20OR%20database%3Aphysics)&q=first_author%3A%22Meynardie%2C%20W.%22&sort=date%20desc%2C%20bibcode%20desc&p_=0" target="_blank" rel="noopener noreferrer">All first-author papers on ADS</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="project" id="contributing" aria-labelledby="ct-title">
+        <h2 class="title" id="ct-title">Contributing author</h2>
+
+        <div class="subsection">
+          <article class="pub">
+            <div class="tags">
+              <span class="tagpill venue">Nature Astronomy</span>
+              <span class="tagpill">June 2023</span>
+            </div>
+            <h3><a href="https://www.nature.com/articles/s41550-023-01981-3" target="_blank" rel="noopener noreferrer">Uncovering a population of gravitational lens galaxies with magnified standard candle SN&nbsp;Zwicky</a></h3>
+            <p class="authors">Ariel Goobar, Joel Johansson, Steve Schulze, Nikki Arendse<span class="rest">, Ana Sagués Carracedo, Suhail Dhawan, Edvard Mörtsell, Christoffer Fremling, Lin Yan, Daniel Perley, Jesper Sollerman, Rémy Joseph, K-Ryan Hinds, <b>William Meynardie</b>, Igor Andreoni, Eric Bellm, Josh Bloom, Thomas E. Collett, Andrew Drake, Matthew Graham, Mansi Kasliwal, Shri R. Kulkarni, Cameron Lemon, Adam A. Miller, James D. Neill, Jakob Nordin, Justin Pierel, Johan Richard, Reed Riddle, Mickael Rigault, Ben Rusholme, Yashvi Sharma, Robert Stein, Gabrielle Stewart, Alice Townsend, Jozsef Vinko, J. Craig Wheeler, Avery Wold</span><button class="more" data-more aria-expanded="false"><span class="lbl">+34 more</span></button></p>
+            <div class="pub-links">
+              <a class="btn" href="https://www.nature.com/articles/s41550-023-01981-3" target="_blank" rel="noopener noreferrer">Publisher</a>
+            </div>
+          </article>
+
+          <div class="ads-row">
+            <a class="btn" href="https://ui.adsabs.harvard.edu/search/fq=%7B!type%3Daqp%20v%3D%24fq_database%7D&fq_database=(database%3Aastronomy%20OR%20database%3Aphysics)&q=author%3A%22Meynardie%2C%20W.%22&sort=date%20desc%2C%20bibcode%20desc&p_=0" target="_blank" rel="noopener noreferrer">All papers on ADS</a>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h3>Navigate</h3>
+        <div class="foot-links">
+          <a href="index-space.html">Home</a>
+          <a href="research-space.html">Research</a>
+          <a href="publications-space.html">Publications</a>
+          <a href="William_Meynardie_CV.pdf">CV</a>
+          <a href="contact-space.html">Contact</a>
+        </div>
+      </div>
+      <div>
+        <h3>Get in touch</h3>
+        <div class="socials">
+          <a href="mailto:wmeynard@umich.edu" aria-label="Email"><svg viewBox="0 0 512 512"><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4C504.9 141.3 512 127.1 512 112c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/></svg></a>
+          <a href="https://bsky.app/profile/wwmeynardie.bsky.social" target="_blank" rel="noopener noreferrer" aria-label="Bluesky"><svg viewBox="0 0 576 512"><path d="M288 227.1C261.9 176.4 190.9 81.9 124.9 35.3C61.6-9.4 37.5-1.7 21.6 5.5C3.3 13.8 0 41.9 0 58.4S9.1 194 15 213.9c19.5 65.7 89.1 87.9 153.2 80.7c3.3-.5 6.6-.9 10-1.4c-3.3 .5-6.6 1-10 1.4C74.3 308.6-9.1 342.8 100.3 464.5C220.6 589.1 265.1 437.8 288 361.1c22.9 76.7 49.2 222.5 185.6 103.4c102.4-103.4 28.1-156-65.8-169.9c-3.3-.4-6.7-.8-10-1.3c3.4 .4 6.7 .9 10 1.3c64.1 7.2 133.7-15 153.2-80.7C566.9 194 576 75 576 58.4s-3.3-44.7-21.6-52.9c-15.8-7.2-40-14.9-103.2 29.8C385.1 81.9 314.1 176.4 288 227.1z"/></svg></a>
+          <a href="https://github.com/wwmeynardie" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><svg viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8z"/></svg></a>
+          <a href="https://www.linkedin.com/in/william-meynardie/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><svg viewBox="0 0 448 512"><path d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8a53.79 53.79 0 0 1 107.58 0c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.29 0-55.69 37.7-55.69 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.69-48.3 87.86-48.3 94 0 111.28 61.9 111.28 142.3V448z"/></svg></a>
+        </div>
+      </div>
+    </div>
+    <div class="copyright">
+      <span>&copy; 2026 William W. Meynardie. All rights reserved.</span>
+      <span>Ann Arbor, Michigan</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   /* ============================================================
+   Starfield (light version of the home page backdrop)
+   ============================================================ */
+(function(){
+  var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var c = document.getElementById("stars"), x = c.getContext("2d"), W,H,dpr,st=[];
+  function build(){
+    dpr = Math.min(devicePixelRatio||1,2);
+    W = c.width = innerWidth*dpr; H = c.height = innerHeight*dpr;
+    c.style.width = innerWidth+"px"; c.style.height = innerHeight+"px";
+    st = [];
+    var n = Math.round(150 * Math.min(1.3,(innerWidth*innerHeight)/900000+.6));
+    for(var i=0;i<n;i++) st.push({x:Math.random()*W,y:Math.random()*H,r:(.3+Math.random()*1.1)*dpr,t:Math.random()*6.28,s:.6+Math.random()*1.4});
+    paint(0);
+  }
+  function paint(t){
+    x.clearRect(0,0,W,H);
+    for(var i=0;i<st.length;i++){
+      var s=st[i], a = reduce ? .55 : .35+.35*Math.sin(t*.0011*s.s+s.t);
+      x.beginPath(); x.fillStyle="rgba(255,255,255,"+a.toFixed(3)+")";
+      x.arc(s.x,s.y,s.r,0,6.2832); x.fill();
+    }
+  }
+  function loop(t){ paint(t); requestAnimationFrame(loop); }
+  addEventListener("resize", build, {passive:true});
+  build();
+  if(!reduce) requestAnimationFrame(loop);
+})();
+
+/* ============================================================
+   /* ============================================================
+   Project sidebar — scroll spy
+   ============================================================ */
+(function(){
+  var links = Array.prototype.slice.call(document.querySelectorAll(".projnav a[data-jump]"));
+  if (!links.length) return;
+  var sections = links.map(function(a){ return document.getElementById(a.getAttribute("href").slice(1)); });
+
+  function setActive(i){
+    links.forEach(function(a, k){
+      if (k === i) a.setAttribute("aria-current","true");
+      else a.removeAttribute("aria-current");
+    });
+  }
+
+  var bar = document.getElementById("topbar"), navEl = document.querySelector(".projnav");
+  function syncOffsets(){
+    var h = bar ? bar.offsetHeight : 56;
+    var root = document.documentElement;
+    root.style.setProperty("--topbar-h", h + "px");
+    var stacked = navEl && getComputedStyle(navEl).position === "sticky" && innerWidth <= 980;
+    root.style.setProperty("--sticky-h", (h + (stacked ? navEl.offsetHeight : 0)) + "px");
+  }
+  syncOffsets();
+  addEventListener("resize", syncOffsets, {passive:true});
+  addEventListener("load", syncOffsets);
+
+  var ticking = false;
+  function spy(){
+    ticking = false;
+    /* the last section whose top has passed the reading line */
+    var line = window.scrollY + Math.min(220, innerHeight * 0.3);
+    var active = 0;
+    for (var i=0;i<sections.length;i++){
+      if (sections[i] && sections[i].offsetTop <= line) active = i;
+    }
+    /* at the very bottom, the final section is what you are looking at */
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 4) active = sections.length - 1;
+    setActive(active);
+  }
+  addEventListener("scroll", function(){
+    if (!ticking){ ticking = true; requestAnimationFrame(spy); }
+  }, {passive:true});
+  addEventListener("resize", spy, {passive:true});
+
+  links.forEach(function(a, i){
+    a.addEventListener("click", function(){ setActive(i); });
+  });
+
+  spy();
+})();
+
+/* ---------- expandable author lists ---------- */
+(function(){
+  document.querySelectorAll("[data-more]").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      var p = btn.closest(".authors");
+      var open = p.classList.toggle("open");
+      btn.setAttribute("aria-expanded", String(open));
+      btn.querySelector(".lbl").textContent = open ? "show fewer" : btn.dataset.label;
+    });
+    btn.dataset.label = btn.querySelector(".lbl").textContent;
+  });
+})();
+
+</script>
+</body>
+</html>
