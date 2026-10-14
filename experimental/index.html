@@ -29,6 +29,7 @@
   --cyan:#7fd7ff;
   --violet:#a98cff;
   --rose:#ff8f9e;
+  --rose:#ff8f9e;
 
   --maxw:1120px;
   --ease:cubic-bezier(.22,.8,.26,1);
@@ -93,6 +94,11 @@ img{max-width:100%;display:block}
   content:"";position:absolute;left:0;right:100%;bottom:0;height:1px;background:var(--amber);
   transition:right .3s var(--ease)
 }
+/* per-section accent, matching that page's planet color on the home orbit */
+#topbar nav a[href="index.html"]::after{background:#fff}
+#topbar nav a[href="publications.html"]::after{background:var(--cyan)}
+#topbar nav a[href="../William_Meynardie_CV.pdf"]::after{background:var(--violet)}
+#topbar nav a[href="contact.html"]::after{background:var(--rose)}
 #topbar nav a:hover{color:var(--ink)}
 #topbar nav a:hover::after{right:0}
 
@@ -161,7 +167,7 @@ img{max-width:100%;display:block}
   background:rgba(255,255,255,.04);
   transition:border-color .3s,background .3s,transform .3s var(--ease)
 }
-.core .ads:hover{border-color:var(--amber);background:rgba(255,179,92,.12);transform:translateY(-2px)}
+.core .ads:hover{border-color:#4376DC;background:rgba(67,118,220,.12);transform:translateY(-2px)}
 
 /* orbits */
 .orbit{
@@ -174,10 +180,10 @@ img{max-width:100%;display:block}
 }
 .orbit .ring{
   position:absolute;inset:0;border-radius:50%;
-  border:1px solid var(--line-soft);
+  border:1px solid rgba(255,255,255,.14);
   transition:border-color .4s
 }
-.orbit:has(.body:hover) .ring{border-color:rgba(255,179,92,.45)}
+.orbit:has(.body:hover) .ring{border-color:var(--glow,rgba(255,179,92,.45))}
 .spinner{
   position:absolute;inset:0;
   animation:spin var(--dur) linear infinite;
@@ -196,15 +202,14 @@ img{max-width:100%;display:block}
 }
 .upright{
   position:absolute;
+  width:var(--r);height:var(--r);
   transform-origin:50% 50%;
   animation:spin var(--dur) linear infinite reverse;
   animation-delay:var(--delay);
-  display:grid;place-items:center;gap:.5rem;
   translate:-50% -50%;
 }
 .planet{
-  position:relative;
-  width:var(--r);height:var(--r);border-radius:50%;
+  position:absolute;inset:0;border-radius:50%;
   background:var(--fill);
   box-shadow:
     inset -5px -6px 14px rgba(0,0,0,.55),
@@ -213,14 +218,30 @@ img{max-width:100%;display:block}
     0 0 22px -4px var(--halo);
   transition:transform .35s var(--ease), box-shadow .35s var(--ease);
 }
-.planet::after{ /* ring for the Saturn-like world */
+/* Saturn-like ring, split into a back arc (behind the sphere) and a front
+   arc (in front of it) so the globe actually occludes the far side instead
+   of the whole ellipse floating on top of the planet as one flat shape. */
+.planet::before{
   content:"";position:absolute;inset:-46% -78%;
   border-radius:50%;
   border:2px solid var(--ringc,transparent);
   border-bottom-color:transparent;
   transform:rotate(-22deg) scaleY(.30);
+  filter:drop-shadow(0 0 2px rgba(0,0,0,.35));
+  z-index:-1;
+}
+.planet::after{
+  content:"";position:absolute;inset:-46% -78%;
+  border-radius:50%;
+  border:2px solid transparent;
+  border-bottom-color:var(--ringc,transparent);
+  border-bottom-width:2.5px;
+  transform:rotate(-22deg) scaleY(.30);
 }
 .body .label{
+  position:absolute;top:100%;left:50%;
+  translate:-50% 0;
+  margin-top:.5rem;
   font-family:"Space Grotesk",sans-serif;
   font-size:.76rem;letter-spacing:.16em;text-transform:uppercase;
   color:var(--ink-2);
@@ -319,6 +340,11 @@ footer{
 .foot-links{display:grid;gap:.45rem}
 .foot-links a{text-decoration:none;color:var(--ink-2);font-size:.92rem;transition:color .25s,padding-left .25s var(--ease)}
 .foot-links a:hover{color:var(--amber);padding-left:.3rem}
+/* per-section accent, matching that page's planet color on the home orbit */
+.foot-links a[href="index.html"]:hover{color:#fff}
+.foot-links a[href="publications.html"]:hover{color:var(--cyan)}
+.foot-links a[href="../William_Meynardie_CV.pdf"]:hover{color:var(--violet)}
+.foot-links a[href="contact.html"]:hover{color:var(--rose)}
 .socials{display:flex;gap:.6rem}
 .socials a{
   width:38px;height:38px;display:grid;place-items:center;
@@ -326,6 +352,11 @@ footer{
   transition:color .25s,border-color .25s,transform .25s var(--ease),background .25s
 }
 .socials a:hover{color:#fff;border-color:var(--amber);background:rgba(255,179,92,.12);transform:translateY(-3px)}
+/* match each account's own accent color on the Contact page's "Elsewhere" cards */
+.socials a[aria-label="Email"]:hover{border-color:#fff;background:rgba(255,255,255,.12)}
+.socials a[aria-label="Bluesky"]:hover{border-color:var(--cyan);background:rgba(127,215,255,.12)}
+.socials a[aria-label="GitHub"]:hover{border-color:var(--violet);background:rgba(169,140,255,.12)}
+.socials a[aria-label="LinkedIn"]:hover{border-color:#3987e5;background:rgba(57,135,229,.12)}
 .socials svg{width:17px;height:17px;fill:currentColor}
 .copyright{
   margin-top:2.4rem;padding-top:1.2rem;border-top:1px solid var(--line-soft);
@@ -334,6 +365,9 @@ footer{
 }
 .copyright a{color:var(--ink-3);text-decoration:none;border-bottom:1px solid var(--line)}
 .copyright a:hover{color:var(--ink-2)}
+.site-toggle{margin-top:1.4rem;display:flex;justify-content:center}
+.site-toggle a{display:inline-flex;align-items:center;gap:.5rem;padding:.55rem 1.1rem;border:1px solid var(--line);border-radius:999px;color:var(--ink-2);font-size:.82rem;text-decoration:none;transition:color .25s,border-color .25s,background .25s,transform .25s var(--ease)}
+.site-toggle a:hover{color:#fff;border-color:#fff;background:rgba(255,255,255,.12);transform:translateY(-2px)}
 
 /* ============================================================
    Small screens — orbits become a launch list
@@ -382,13 +416,13 @@ footer{
 
 <!-- top bar -->
 <header id="topbar">
-  <a class="mark" href="index-space.html" style="text-decoration:none">W<span>.</span>W<span>.</span> Meynardie</a>
+  <a class="mark" href="index.html" style="text-decoration:none">W<span>.</span>W<span>.</span> Meynardie</a>
   <nav>
-    <a href="index-space.html">Home</a>
-    <a href="research-space.html">Research</a>
-    <a href="publications-space.html">Publications</a>
-    <a href="William_Meynardie_CV.pdf">CV</a>
-    <a href="contact-space.html">Contact</a>
+    <a href="index.html">Home</a>
+    <a href="research.html">Research</a>
+    <a href="publications.html">Publications</a>
+    <a href="../William_Meynardie_CV.pdf">CV</a>
+    <a href="contact.html">Contact</a>
   </nav>
 </header>
 
@@ -397,11 +431,11 @@ footer{
   <div class="system">
 
     <!-- Research -->
-    <div class="orbit" style="--a:42deg;--size:66%;--dur:34s;--delay:-2s">
+    <div class="orbit" style="--a:325deg;--size:100%;--dur:80s;--delay:-24s;--glow:rgba(255,179,92,.85)">
       <div class="ring"></div>
       <div class="spinner">
-        <a class="body" href="research-space.html" aria-label="Research">
-          <span class="upright" style="--dur:34s;--delay:-2s">
+        <a class="body" href="research.html" aria-label="Research">
+          <span class="upright" style="--dur:80s;--delay:-24s;--r:30px">
             <span class="planet" style="--r:30px;--fill:radial-gradient(circle at 32% 28%, #ffd9a1, #e79f4e 42%, #a45f21 100%);--halo:rgba(255,179,92,.7);--ringc:rgba(255,214,160,.85)"></span>
             <span class="label">Research</span>
           </span>
@@ -410,11 +444,11 @@ footer{
     </div>
 
     <!-- Publications -->
-    <div class="orbit" style="--a:150deg;--size:79%;--dur:48s;--delay:-16s">
+    <div class="orbit" style="--a:255deg;--size:90%;--dur:68s;--delay:-40s;--glow:rgba(127,215,255,.85)">
       <div class="ring"></div>
       <div class="spinner">
-        <a class="body" href="publications-space.html" aria-label="Publications">
-          <span class="upright" style="--dur:48s;--delay:-16s">
+        <a class="body" href="publications.html" aria-label="Publications">
+          <span class="upright" style="--dur:68s;--delay:-40s;--r:26px">
             <span class="planet" style="--r:26px;--fill:radial-gradient(circle at 34% 26%, #cfe6ff, #8fb6ee 40%, #4a6cb0 100%);--halo:rgba(127,215,255,.65)"></span>
             <span class="label">Publications</span>
           </span>
@@ -423,11 +457,11 @@ footer{
     </div>
 
     <!-- CV -->
-    <div class="orbit" style="--a:255deg;--size:90%;--dur:62s;--delay:-40s">
+    <div class="orbit" style="--a:150deg;--size:79%;--dur:56s;--delay:-16s;--glow:rgba(169,140,255,.85)">
       <div class="ring"></div>
       <div class="spinner">
-        <a class="body" href="William_Meynardie_CV.pdf" aria-label="Curriculum Vitae">
-          <span class="upright" style="--dur:62s;--delay:-40s">
+        <a class="body" href="../William_Meynardie_CV.pdf" aria-label="Curriculum Vitae">
+          <span class="upright" style="--dur:56s;--delay:-16s;--r:22px">
             <span class="planet" style="--r:22px;--fill:radial-gradient(circle at 34% 26%, #e6dcff, #b9a2ff 40%, #6a4fc4 100%);--halo:rgba(169,140,255,.65)"></span>
             <span class="label">CV</span>
           </span>
@@ -436,11 +470,11 @@ footer{
     </div>
 
     <!-- Contact -->
-    <div class="orbit" style="--a:325deg;--size:100%;--dur:80s;--delay:-24s">
+    <div class="orbit" style="--a:42deg;--size:66%;--dur:43s;--delay:-2s;--glow:rgba(255,143,158,.85)">
       <div class="ring"></div>
       <div class="spinner">
-        <a class="body" href="contact-space.html" aria-label="Contact">
-          <span class="upright" style="--dur:80s;--delay:-24s">
+        <a class="body" href="contact.html" aria-label="Contact">
+          <span class="upright" style="--dur:43s;--delay:-2s;--r:18px">
             <span class="planet" style="--r:18px;--fill:radial-gradient(circle at 34% 26%, #ffd2d2, #ff9d8f 40%, #b1503f 100%);--halo:rgba(255,143,158,.6)"></span>
             <span class="label">Contact</span>
           </span>
@@ -452,18 +486,18 @@ footer{
     <div class="core">
       <div class="glow" aria-hidden="true"></div>
       <h1><span class="given">William W.</span><span class="family">Meynardie</span></h1>
-      <p class="role">Ph.D. student &middot; University of Michigan</p>
-      <p class="rotator" aria-live="off">I study <b id="rot">exoplanet atmospheres</b></p>
+      <p class="role">Ph.D. student<br>University of Michigan</p>
+      <!-- <p class="rotator" aria-live="off">I study <b id="rot">exoplanet atmospheres</b></p> -->
       <a class="ads" target="_blank" rel="noopener noreferrer"
          href="https://ui.adsabs.harvard.edu/search/p_=0&amp;q=author%3A%22Meynardie%2C%20W.%22&amp;sort=date%20desc%2C%20bibcode%20desc">NASA ADS</a>
     </div>
 
     <!-- phone navigation -->
     <div class="mobile-nav">
-      <a href="research-space.html"><span class="dot" style="--fill:radial-gradient(circle at 32% 28%, #ffd9a1, #e79f4e 50%, #a45f21);--halo:rgba(255,179,92,.7)"></span>Research</a>
-      <a href="publications-space.html"><span class="dot" style="--fill:radial-gradient(circle at 34% 26%, #cfe6ff, #8fb6ee 50%, #4a6cb0);--halo:rgba(127,215,255,.65)"></span>Publications</a>
-      <a href="William_Meynardie_CV.pdf"><span class="dot" style="--fill:radial-gradient(circle at 34% 26%, #e6dcff, #b9a2ff 50%, #6a4fc4);--halo:rgba(169,140,255,.65)"></span>CV</a>
-      <a href="contact-space.html"><span class="dot" style="--fill:radial-gradient(circle at 34% 26%, #ffd2d2, #ff9d8f 50%, #b1503f);--halo:rgba(255,143,158,.6)"></span>Contact</a>
+      <a href="research.html"><span class="dot" style="--fill:radial-gradient(circle at 32% 28%, #ffd9a1, #e79f4e 50%, #a45f21);--halo:rgba(255,179,92,.7)"></span>Research</a>
+      <a href="publications.html"><span class="dot" style="--fill:radial-gradient(circle at 34% 26%, #cfe6ff, #8fb6ee 50%, #4a6cb0);--halo:rgba(127,215,255,.65)"></span>Publications</a>
+      <a href="../William_Meynardie_CV.pdf"><span class="dot" style="--fill:radial-gradient(circle at 34% 26%, #e6dcff, #b9a2ff 50%, #6a4fc4);--halo:rgba(169,140,255,.65)"></span>CV</a>
+      <a href="contact.html"><span class="dot" style="--fill:radial-gradient(circle at 34% 26%, #ffd2d2, #ff9d8f 50%, #b1503f);--halo:rgba(255,143,158,.6)"></span>Contact</a>
     </div>
 
   </div>
@@ -477,12 +511,12 @@ footer{
     <div class="eyebrow reveal">About</div>
     <div class="about">
       <div class="portrait reveal">
-        <img src="images/portrait.jpg" alt="William W. Meynardie"
+        <img src="../images/portrait.jpg" alt="William W. Meynardie"
              onerror="this.style.display='none';this.nextElementSibling.style.display='grid';" />
-        <div class="fallback" style="display:none">portrait.jpg not found<br>in /images</div>
+        <div class="fallback" style="display:none">portrait.jpg not found<br>in ../images</div>
       </div>
       <div class="prose reveal">
-        <h2>Reading formation histories out of&nbsp;atmospheres</h2>
+        <h2>About Me</h2>
         <p>
           I am a third year Ph.D. student in the
           <a target="_blank" rel="noopener noreferrer" href="https://lsa.umich.edu/astro">University of Michigan Department of Astronomy</a>.
@@ -503,13 +537,13 @@ footer{
         <p>
           Outside of astronomy, I like sports, video games, and paddleboarding around Ann&nbsp;Arbor.
         </p>
-        <div class="facts">
+        <!-- <div class="facts">
           <span class="fact">JWST NIRSpec</span>
           <span class="fact">Atmospheric retrievals</span>
           <span class="fact">Brown dwarfs</span>
           <span class="fact">Ross 458 C</span>
           <span class="fact">Paddleboarding</span>
-        </div>
+        </div> -->
       </div>
     </div>
   </section>
@@ -522,11 +556,11 @@ footer{
       <div>
         <h3>Navigate</h3>
         <div class="foot-links">
-          <a href="index-space.html">Home</a>
-          <a href="research-space.html">Research</a>
-          <a href="publications-space.html">Publications</a>
-          <a href="William_Meynardie_CV.pdf">CV</a>
-          <a href="contact-space.html">Contact</a>
+          <a href="index.html">Home</a>
+          <a href="research.html">Research</a>
+          <a href="publications.html">Publications</a>
+          <a href="../William_Meynardie_CV.pdf">CV</a>
+          <a href="contact.html">Contact</a>
         </div>
       </div>
       <div>
@@ -548,8 +582,13 @@ footer{
       </div>
     </div>
     <div class="copyright">
-      <span>&copy; 2026 William W. Meynardie. All rights reserved.</span>
-      <span>Ann Arbor, Michigan</span>
+      <span>
+        The experimental version of this site was created with the help of Anthropic's Sonnet 5.
+        William W. Meynardie takes responsibility for all aspects of the content and design, and for any errors or omissions.
+      </span>
+    </div>
+    <div class="site-toggle">
+      <a href="../index.html">&larr; Back to the main site</a>
     </div>
   </div>
 </footer>
@@ -697,25 +736,26 @@ footer{
   });
 
   /* ---------- rotating interest ---------- */
-  var words = [
-    "exoplanet atmospheres",
-    "brown dwarfs",
-    "JWST spectra",
-    "how planets form",
-    "widely separated companions"
-  ];
-  var rot = document.getElementById("rot"), wi = 0;
-  if (!reduce){
-    rot.style.transition = "opacity .45s ease";
-    setInterval(function(){
-      rot.style.opacity = "0";
-      setTimeout(function(){
-        wi = (wi + 1) % words.length;
-        rot.textContent = words[wi];
-        rot.style.opacity = "1";
-      }, 450);
-    }, 3600);
-  }
+  // var words = [
+  //   "exoplanet atmospheres",
+  //   "brown dwarfs",
+  //   "JWST spectra",
+  //   "how planets form",
+  //   "widely separated companions",
+  //   "deez nuts"
+  // ];
+  // var rot = document.getElementById("rot"), wi = 0;
+  // if (!reduce){
+  //   rot.style.transition = "opacity .45s ease";
+  //   setInterval(function(){
+  //     rot.style.opacity = "0";
+  //     setTimeout(function(){
+  //       wi = (wi + 1) % words.length;
+  //       rot.textContent = words[wi];
+  //       rot.style.opacity = "1";
+  //     }, 450);
+  //   }, 3600);
+  // }
 })();
 </script>
 </body>

@@ -116,12 +116,24 @@
             </div>
         </div>
 
+        <!-- Site version toggle -->
+        <div id="site-toggle">
+            <a id="experimental-toggle" href="experimental/index.html" class="button alt">Try the Experimental Site</a>
+        </div>
+
         <!-- Copyright -->
         <div id="copyright">
             <ul class="menu">
                 <li>&copy; 2025 William W. Meynardie. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li><li>Template: <a href="https://html5up.net/txt">TXT</a></li>
             </ul>
         </div>
+        <script>
+            (function(){
+                var page = location.pathname.split('/').pop() || 'index.html';
+                var link = document.getElementById('experimental-toggle');
+                if (link) link.setAttribute('href', 'experimental/' + page);
+            })();
+        </script>
 
     </div>
 </footer>

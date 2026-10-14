@@ -25,6 +25,7 @@
   --amber:#ffb35c;
   --cyan:#7fd7ff;
   --violet:#a98cff;
+  --rose:#ff8f9e;
 
   /* validated categorical slots (dark, surface #0a0d1e, all-pairs) */
   --s1:#3987e5;
@@ -74,6 +75,11 @@ img{max-width:100%;display:block}
 }
 #topbar nav a.current{color:var(--ink)}
 #topbar nav a::after{content:"";position:absolute;left:0;right:100%;bottom:0;height:1px;background:var(--amber);transition:right .3s var(--ease)}
+/* per-section accent, matching that page's planet color on the home orbit */
+#topbar nav a[href="index.html"]::after{background:#fff}
+#topbar nav a[href="publications.html"]::after{background:var(--cyan)}
+#topbar nav a[href="../William_Meynardie_CV.pdf"]::after{background:var(--violet)}
+#topbar nav a[href="contact.html"]::after{background:var(--rose)}
 #topbar nav a.current::after,#topbar nav a:hover::after{right:0}
 #topbar nav a:hover{color:var(--ink)}
 @media (max-width:820px){
@@ -129,7 +135,7 @@ section.band{padding:clamp(2.5rem,6vh,4rem) 0}
   transition:color .25s,background .25s,border-color .25s;
 }
 .projnav a:hover{color:var(--ink-2);background:rgba(255,255,255,.04)}
-.projnav a:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.projnav a:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 .projnav .dot{
   width:10px;height:10px;border-radius:50%;flex:0 0 auto;
   background:rgba(255,255,255,.20);
@@ -137,7 +143,7 @@ section.band{padding:clamp(2.5rem,6vh,4rem) 0}
 }
 .projnav .num{font-family:"JetBrains Mono",monospace;font-size:.68rem;color:var(--ink-3);margin-left:auto;opacity:.7}
 .projnav a[aria-current="true"]{color:#fff;background:rgba(255,255,255,.06);border-color:var(--line)}
-.projnav a[aria-current="true"] .dot{background:var(--amber);box-shadow:0 0 12px -1px var(--amber);transform:scale(1.2)}
+.projnav a[aria-current="true"] .dot{background:var(--cyan);box-shadow:0 0 12px -1px var(--cyan);transform:scale(1.2)}
 
 .project{scroll-margin-top:calc(var(--topbar-h,56px) + 30px)}
 .project + .project{border-top:1px solid var(--line-soft);margin-top:clamp(2.5rem,7vh,4.5rem);padding-top:clamp(2.5rem,7vh,4.5rem)}
@@ -182,11 +188,24 @@ footer{
 .foot-links{display:grid;gap:.45rem}
 .foot-links a{text-decoration:none;color:var(--ink-2);font-size:.92rem;transition:color .25s,padding-left .25s var(--ease)}
 .foot-links a:hover{color:var(--amber);padding-left:.3rem}
+/* per-section accent, matching that page's planet color on the home orbit */
+.foot-links a[href="index.html"]:hover{color:#fff}
+.foot-links a[href="publications.html"]:hover{color:var(--cyan)}
+.foot-links a[href="../William_Meynardie_CV.pdf"]:hover{color:var(--violet)}
+.foot-links a[href="contact.html"]:hover{color:var(--rose)}
 .socials{display:flex;gap:.6rem}
 .socials a{width:38px;height:38px;display:grid;place-items:center;border:1px solid var(--line);border-radius:11px;color:var(--ink-2);transition:all .25s var(--ease)}
 .socials a:hover{color:#fff;border-color:var(--amber);background:rgba(255,179,92,.12);transform:translateY(-3px)}
+/* match each account's own accent color on the Contact page's "Elsewhere" cards */
+.socials a[aria-label="Email"]:hover{border-color:#fff;background:rgba(255,255,255,.12)}
+.socials a[aria-label="Bluesky"]:hover{border-color:var(--cyan);background:rgba(127,215,255,.12)}
+.socials a[aria-label="GitHub"]:hover{border-color:var(--violet);background:rgba(169,140,255,.12)}
+.socials a[aria-label="LinkedIn"]:hover{border-color:#3987e5;background:rgba(57,135,229,.12)}
 .socials svg{width:17px;height:17px;fill:currentColor}
 .copyright{margin-top:2.4rem;padding-top:1.2rem;border-top:1px solid var(--line-soft);display:flex;flex-wrap:wrap;gap:.4rem 1.2rem;font-size:.76rem;color:var(--ink-3)}
+.site-toggle{margin-top:1.4rem;display:flex;justify-content:center}
+.site-toggle a{display:inline-flex;align-items:center;gap:.5rem;padding:.55rem 1.1rem;border:1px solid var(--line);border-radius:999px;color:var(--ink-2);font-size:.82rem;text-decoration:none;transition:color .25s,border-color .25s,background .25s,transform .25s var(--ease)}
+.site-toggle a:hover{color:#fff;border-color:var(--cyan);background:rgba(127,215,255,.12);transform:translateY(-2px)}
 
 @media (max-width:860px){.split{grid-template-columns:1fr}}
 @media (max-width:980px){
@@ -224,10 +243,10 @@ footer{
   border:1px solid var(--line);border-radius:999px;padding:.2rem .65rem;color:var(--ink-3);
 }
 .tagpill.venue{color:var(--cyan);border-color:rgba(127,215,255,.32)}
-.tagpill.lead{color:var(--amber);border-color:rgba(255,179,92,.35)}
+.tagpill.lead{color:var(--cyan);border-color:rgba(127,215,255,.35)}
 .pub h3{font-size:clamp(1.05rem,2.2vw,1.32rem);line-height:1.3;margin:0 0 .7rem}
 .pub h3 a{color:var(--ink);text-decoration:none;border-bottom:1px solid transparent;transition:color .25s,border-color .25s}
-.pub h3 a:hover{color:#fff;border-bottom-color:var(--amber)}
+.pub h3 a:hover{color:#fff;border-bottom-color:var(--cyan)}
 .authors{color:var(--ink-3);font-size:.86rem;margin:0 0 .9rem;line-height:1.6}
 .authors b{color:var(--ink);font-weight:600}
 .authors .rest{display:none}
@@ -238,7 +257,7 @@ footer{
   border-bottom:1px solid rgba(127,215,255,.35);
 }
 .more:hover{color:#fff;border-bottom-color:#fff}
-.more:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.more:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 .pub-links{display:flex;flex-wrap:wrap;gap:.5rem}
 .btn{
   display:inline-flex;align-items:center;gap:.45rem;
@@ -247,7 +266,7 @@ footer{
   padding:.4rem .9rem;background:rgba(255,255,255,.03);
   transition:color .25s,border-color .25s,background .25s,transform .25s var(--ease);
 }
-.btn:hover{color:#fff;border-color:var(--amber);background:rgba(255,179,92,.12);transform:translateY(-2px)}
+.btn:hover{color:#fff;border-color:var(--cyan);background:rgba(127,215,255,.12);transform:translateY(-2px)}
 .ads-row{margin-top:1.5rem}
 </style>
 </head>
@@ -257,23 +276,19 @@ footer{
 <div class="nebula"></div>
 
 <header id="topbar">
-  <a class="mark" href="index-space.html">W<span>.</span>W<span>.</span> Meynardie</a>
+  <a class="mark" href="index.html">W<span>.</span>W<span>.</span> Meynardie</a>
   <nav>
-    <a href="index-space.html">Home</a>
-    <a href="research-space.html">Research</a>
-    <a href="publications-space.html" class="current">Publications</a>
-    <a href="William_Meynardie_CV.pdf">CV</a>
-    <a href="contact-space.html">Contact</a>
+    <a href="index.html">Home</a>
+    <a href="research.html">Research</a>
+    <a href="publications.html" class="current">Publications</a>
+    <a href="../William_Meynardie_CV.pdf">CV</a>
+    <a href="contact.html">Contact</a>
   </nav>
 </header>
 
 <main>
   <div class="wrap pagehead">
     <div class="eyebrow">Publications</div>
-    <h1>Papers</h1>
-    <p class="lede">
-      Peer-reviewed work, newest first. Author lists are collapsed &mdash; click to see everyone.
-    </p>
   </div>
 
   <div class="wrap layout">
@@ -304,7 +319,7 @@ footer{
             <p class="authors"><b>William W. Meynardie</b>, Michael R. Meyer, Ryan J. MacDonald, Per Calissendorff<span class="rest">, Elijah Mullens, Gabriel Munoz Zarazua, Anuranj Roy, Hansica Ganta, Eileen C. Gonzales, Arthur Adams, Nikole Lewis, Yucian Hong, Jonathan Lunine</span><button class="more" data-more aria-expanded="false"><span class="lbl">+9 more</span></button></p>
             <div class="pub-links">
               <a class="btn" href="https://ui.adsabs.harvard.edu/abs/2025arXiv250922803M/abstract" target="_blank" rel="noopener noreferrer">NASA ADS</a>
-              <a class="btn" href="research-space.html#ross458c">Explore the spectrum</a>
+              <a class="btn" href="research.html#ross458c">Explore the spectrum</a>
             </div>
           </article>
 
@@ -346,11 +361,11 @@ footer{
       <div>
         <h3>Navigate</h3>
         <div class="foot-links">
-          <a href="index-space.html">Home</a>
-          <a href="research-space.html">Research</a>
-          <a href="publications-space.html">Publications</a>
-          <a href="William_Meynardie_CV.pdf">CV</a>
-          <a href="contact-space.html">Contact</a>
+          <a href="index.html">Home</a>
+          <a href="research.html">Research</a>
+          <a href="publications.html">Publications</a>
+          <a href="../William_Meynardie_CV.pdf">CV</a>
+          <a href="contact.html">Contact</a>
         </div>
       </div>
       <div>
@@ -364,8 +379,13 @@ footer{
       </div>
     </div>
     <div class="copyright">
-      <span>&copy; 2026 William W. Meynardie. All rights reserved.</span>
-      <span>Ann Arbor, Michigan</span>
+      <span>
+        The experimental version of this site was created with the help of Anthropic's Sonnet 5.
+        William W. Meynardie takes responsibility for all aspects of the content and design, and for any errors or omissions.
+      </span>
+    </div>
+    <div class="site-toggle">
+      <a href="../publications.html">&larr; Back to the main site</a>
     </div>
   </div>
 </footer>

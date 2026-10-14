@@ -2731,6 +2731,22 @@ input, select, textarea {
 				line-height: 1em;
 			}
 
+/* Site toggle */
+
+	#site-toggle {
+		margin: 2em 0 0 0;
+	}
+
+		#site-toggle .button.alt {
+			background: var(--crblue);
+			color: var(--boldblue);
+		}
+
+			#site-toggle .button.alt:hover {
+				background: var(--boldblue);
+				color: var(--crblue);
+			}
+
 /* XLarge */
 
 	@media screen and (max-width: 1680px) {
